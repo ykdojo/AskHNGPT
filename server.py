@@ -25,7 +25,7 @@ with open('ai-plugin.json', 'r') as manifest_file:
 
 @app.get("/", response_class=PlainTextResponse)
 def intro():
-    return "Welcome to WordCounterGPT"
+    return "Welcome to AskHNGPT"
 
 # Serve the manifest file at the /.well-known/ai-plugin.json path
 @app.get("/.well-known/ai-plugin.json")
