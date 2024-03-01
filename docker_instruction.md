@@ -25,13 +25,13 @@ CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 To build your Docker image, use the following command in your terminal within the project directory:
 
 ```bash
-docker build -t wordcountergpt-app .
+docker build -t askhngpt-app .
 ```
 
 After building the image, run your Docker container with a volume mapped to your project directory so that changes to files like `server.py` are reflected in real-time inside the container. Use this command:
 
 ```bash
-docker run -d --name wordcountergpt-container -p 8000:8000 -v $(pwd):/app wordcountergpt-app
+docker run -d --name askhngpt-container -p 8000:8000 -v $(pwd):/app askhngpt-app
 ```
 
-This command runs the Docker container in detached mode (`-d`), names it `wordcountergpt-container`, maps port 8000 on your host to port 8000 in the container, and mounts the current directory (`$(pwd)`) to `/app` inside the container. This setup facilitates development by allowing changes made to your project files to be automatically available inside the container.
+This command runs the Docker container in detached mode (`-d`), names it `askhngpt-container`, maps port 8000 on your host to port 8000 in the container, and mounts the current directory (`$(pwd)`) to `/app` inside the container. This setup facilitates development by allowing changes made to your project files to be automatically available inside the container.
