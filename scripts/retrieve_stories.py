@@ -1,3 +1,5 @@
+# Max ID endpoint (thanks to Salman): https://hacker-news.firebaseio.com/v0/maxitem.json?print=pretty
+
 import requests
 
 def get_recent_stories(limit=3):
