@@ -9,7 +9,7 @@ app = FastAPI(
     description="An API that returns the most relevant HN comments asked by the user.",
     version="1.0.0",
     servers=[
-        {"url": "https://weather.example.com"},
+        {"url": "https://7e9de4463e2821.lhr.life"},
     ],
 )
 
