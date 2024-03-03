@@ -5,9 +5,12 @@ from pydantic import BaseModel
 import json
 
 app = FastAPI(
-    title="Word Counter API",
-    description="An API that counts characters and words in a given text.",
+    title="Ask HN GPT",
+    description="An API that returns the most relevant HN comments asked by the user.",
     version="1.0.0",
+    servers=[
+        {"url": "https://weather.example.com"},
+    ],
 )
 
 # Enable CORS for https://chat.openai.com/
