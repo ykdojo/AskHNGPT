@@ -16,7 +16,7 @@ db = AstraDB(
 # print(collection)
 # print(f"Connected to Astra DB: {db.get_collections()}")
 
-# Or you can connect to an existing connection directly
+# Or you can connect to an existing collection directly
 collection = AstraDBCollection(
     collection_name="hn_comments_main", astra_db=db
 )
