@@ -1,4 +1,4 @@
-from astrapy.db import AstraDB
+from astrapy.db import AstraDB, AstraDBCollection
 
 import os
 from dotenv import load_dotenv
@@ -16,3 +16,32 @@ db = AstraDB(
 # print(collection)
 # print(f"Connected to Astra DB: {db.get_collections()}")
 
+# Or you can connect to an existing connection directly
+collection = AstraDBCollection(
+    collection_name="collection_test", astra_db=db
+)
+print(collection)
+print(f"Connected to Astra DB: {db.get_collections()}")
+
+current_id = 39610860
+import requests
+item_url = f"https://hacker-news.firebaseio.com/v0/item/{current_id}.json"
+item = requests.get(item_url).json()
+print(item)
+# {'by': 'pm90', 'id': 39610860, 'parent': 39565773, 'text': 'I don’t think so. However Tesla is famous for lowballing SWEs and they have a pretty terrible internal development&#x2F;services platform. I wouldn’t want to work there as an SWE.', 'time': 1709685288, 'type': 'comment'}
+# URL: https://news.ycombinator.com/item?id=39610860
+
+from FlagEmbedding import BGEM3FlagModel
+model = BGEM3FlagModel('BAAI/bge-m3', use_fp16=True)
+
+embedding = model.encode(item['text'])['dense_vecs']
+print(embedding)
+
+# collection.insert_one(
+#     {
+#         "_id": "5",
+#         "name": "Coded Cleats Copy",
+#         "description": "ChatGPT integrated sneakers that talk to you",
+#         "$vector": [0.25, 0.25, 0.25, 0.25, 0.25],
+#     }
+# )
