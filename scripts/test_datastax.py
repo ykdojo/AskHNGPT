@@ -48,7 +48,7 @@ highest_id_processed = start_id
 comments_processed = 0
 current_id = start_id
 
-while comments_processed < 100:
+while comments_processed < 1000:
     item_url = f"https://hacker-news.firebaseio.com/v0/item/{current_id}.json"
     item = requests.get(item_url).json()
     
