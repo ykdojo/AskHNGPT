@@ -18,7 +18,7 @@ db = AstraDB(
 
 # Or you can connect to an existing connection directly
 collection = AstraDBCollection(
-    collection_name="collection_test", astra_db=db
+    collection_name="hn_comments_main", astra_db=db
 )
 print(collection)
 print(f"Connected to Astra DB: {db.get_collections()}")
@@ -37,11 +37,13 @@ model = BGEM3FlagModel('BAAI/bge-m3', use_fp16=True)
 embedding = model.encode(item['text'])['dense_vecs']
 print(embedding)
 
-# collection.insert_one(
-#     {
-#         "_id": "5",
-#         "name": "Coded Cleats Copy",
-#         "description": "ChatGPT integrated sneakers that talk to you",
-#         "$vector": [0.25, 0.25, 0.25, 0.25, 0.25],
-#     }
-# )
+collection.insert_one(
+    {
+        "_id": item['id'],
+        "URL": f"https://news.ycombinator.com/item?id={item['id']}",
+        "user": item['by'],
+        'text': item['text'],
+        "$vector": embedding,
+    }
+)
+print('Inserted comment')
