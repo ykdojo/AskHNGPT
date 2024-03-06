@@ -23,27 +23,24 @@ collection = AstraDBCollection(
 print(collection)
 print(f"Connected to Astra DB: {db.get_collections()}")
 
-current_id = 39610860
 import requests
-item_url = f"https://hacker-news.firebaseio.com/v0/item/{current_id}.json"
-item = requests.get(item_url).json()
-print(item)
-# {'by': 'pm90', 'id': 39610860, 'parent': 39565773, 'text': 'I don’t think so. However Tesla is famous for lowballing SWEs and they have a pretty terrible internal development&#x2F;services platform. I wouldn’t want to work there as an SWE.', 'time': 1709685288, 'type': 'comment'}
-# URL: https://news.ycombinator.com/item?id=39610860
-
 from FlagEmbedding import BGEM3FlagModel
 model = BGEM3FlagModel('BAAI/bge-m3', use_fp16=True)
 
-embedding = model.encode(item['text'])['dense_vecs']
-print(embedding)
-
-collection.insert_one(
-    {
-        "_id": item['id'],
-        "URL": f"https://news.ycombinator.com/item?id={item['id']}",
-        "user": item['by'],
-        'text': item['text'],
-        "$vector": embedding,
-    }
-)
-print('Inserted comment')
+for current_id in range(39610861, 39610871):  # From 39610861 to 39610870
+    item_url = f"https://hacker-news.firebaseio.com/v0/item/{current_id}.json"
+    item = requests.get(item_url).json()
+    
+    # Proceed only if item is a comment
+    if item.get('type') == 'comment' and 'text' in item:
+        embedding = model.encode(item['text'])['dense_vecs']
+        collection.insert_one({
+            "_id": item['id'],
+            "URL": f"https://news.ycombinator.com/item?id={item['id']}",
+            "user": item['by'],
+            'text': item['text'],
+            "$vector": embedding,
+        })
+        print(f'Inserted comment with ID: {current_id}')
+    else:
+        print(f'Skipped item with ID: {current_id}, not a comment or no text field')
