@@ -52,8 +52,11 @@ while comments_processed < 10000:
     item_url = f"https://hacker-news.firebaseio.com/v0/item/{current_id}.json"
     item = requests.get(item_url).json()
     
+    if not item:
+        print(f'No item with ID: {current_id}')
+        break
     # Check if the item exists and proceed only if it's a comment
-    if item and item.get('type') == 'comment' and 'text' in item:
+    if item.get('type') == 'comment' and 'text' in item:
         embedding = model.encode(item['text'])['dense_vecs']
         collection.insert_one({
             "_id": item['id'],
