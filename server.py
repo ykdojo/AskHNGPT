@@ -22,6 +22,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from FlagEmbedding import BGEM3FlagModel
+
+model = BGEM3FlagModel('BAAI/bge-m3',  
+                       use_fp16=True)
+
 # Load the manifest content from the ai-plugin.json file
 with open('ai-plugin.json', 'r') as manifest_file:
     manifest_content = json.load(manifest_file)
@@ -32,28 +37,8 @@ def intro():
 
 @app.get("/hn_comments/{question}", response_class=JSONResponse)
 def get_hn_comments(question: str):
-    comments = [
-        {
-            "username": "devUser1",
-            "date": "2024-03-01",
-            "comment_body": "I think React is great for building fast and scalable front-end applications. It's component-based architecture makes it easy to reuse code.",
-            "link": "https://news.ycombinator.com/item?id=12345678"
-        },
-        {
-            "username": "webMaster23",
-            "date": "2024-02-28",
-            "comment_body": "React has a bit of a learning curve, but once you get the hang of it, it's incredibly powerful.",
-            "link": "https://news.ycombinator.com/item?id=87654321"
-        },
-        {
-            "username": "jsGuru",
-            "date": "2024-02-27",
-            "comment_body": "I've been using React for several years now and it's my go-to library for UI development. The ecosystem is rich and the community is very supportive.",
-            "link": "https://news.ycombinator.com/item?id=23456789"
-        }
-    ]
-
-    return comments
+    embedding = model.encode(question)['dense_vecs']
+    return embedding.tolist()
 
 # Serve the manifest file at the /.well-known/ai-plugin.json path
 @app.get("/.well-known/ai-plugin.json")
