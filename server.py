@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import BaseModel
 import json
+from astrapy.db import AstraDB, AstraDBCollection
 
 app = FastAPI(
     title="Ask HN GPT",
@@ -24,6 +25,24 @@ app.add_middleware(
 
 from FlagEmbedding import BGEM3FlagModel
 model = BGEM3FlagModel('BAAI/bge-m3', use_fp16=True)
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Initialize the client
+db = AstraDB(
+  token=os.getenv('ASTRA_DB_APPLICATION_TOKEN'),
+  api_endpoint=os.getenv('ASTRA_DB_API_ENDPOINT')
+)
+
+# Or you can connect to an existing collection directly
+collection = AstraDBCollection(
+    collection_name="hn_comments_main", astra_db=db
+)
+print(collection)
+print(f"Connected to Astra DB: {db.get_collections()}")
 
 # Load the manifest content from the ai-plugin.json file
 with open('ai-plugin.json', 'r') as manifest_file:

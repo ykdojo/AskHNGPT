@@ -10,9 +10,6 @@ COPY requirements.txt .
 # Install any dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Download the model (make sure you have enough space)
-RUN transformers-cli download BAAI/bge-m3
-
 # Copy the content of your project to the working directory
 COPY . .
 

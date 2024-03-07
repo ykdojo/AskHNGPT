@@ -1,5 +1,5 @@
 fastapi
 uvicorn
 FlagEmbedding
-torch
-transformers
+astrapy
+python-dotenv
