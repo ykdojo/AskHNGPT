@@ -54,8 +54,40 @@ def intro():
 
 @app.get("/hn_comments/{question}", response_class=JSONResponse)
 def get_hn_comments(question: str):
+    print('get_hn_comments')
     embedding = model.encode(question)['dense_vecs']
-    return embedding.tolist()
+    print('embedding has been created')
+    documents = collection.vector_find(
+        embedding,
+        limit=100,
+    )
+    print('documents have been found')
+
+    # > documents[0].keys()
+    # dict_keys(['_id', 'URL', 'user', 'text', '$vector', '$similarity'])
+
+    cleaned_documents = []
+    total_chars = 0
+
+    for document in documents:
+        # Calculate the remaining characters allowed
+        remaining_chars = 10000 - total_chars
+        
+        # If adding this document exceeds the limit, stop adding more documents
+        if len(document['text']) > remaining_chars:
+            break
+        
+        # Add characters count of current document to total
+        total_chars += len(document['text'])
+        
+        # Remove $vector and $similarity fields
+        document.pop('$vector', None)
+        document.pop('$similarity', None)
+        
+        cleaned_documents.append(document)
+    
+    print('length of cleaned_documents:', len(cleaned_documents))
+    return cleaned_documents
 
 # Serve the manifest file at the /.well-known/ai-plugin.json path
 @app.get("/.well-known/ai-plugin.json")
