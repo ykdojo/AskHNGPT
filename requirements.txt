@@ -1,3 +1,5 @@
 fastapi
 uvicorn
 FlagEmbedding
+torch
+transformers
