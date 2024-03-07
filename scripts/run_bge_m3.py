@@ -50,6 +50,8 @@ collection = AstraDBCollection(
 print(collection)
 print(f"Connected to Astra DB: {db.get_collections()}")
 
+# print(embeddings_2.tolist())
+
 # Use vector search with embeddings_2
 documents = collection.vector_find(
     embeddings_2,
@@ -59,4 +61,25 @@ documents = collection.vector_find(
 # > documents[0].keys()
 # dict_keys(['_id', 'URL', 'user', 'text', '$vector', '$similarity'])
 
-print(documents)
+cleaned_documents = []
+total_chars = 0
+
+for document in documents:
+    # Calculate the remaining characters allowed
+    remaining_chars = 10000 - total_chars
+    
+    # If adding this document exceeds the limit, stop adding more documents
+    if len(document['text']) > remaining_chars:
+        break
+    
+    # Add characters count of current document to total
+    total_chars += len(document['text'])
+    
+    # Remove $vector and $similarity fields
+    document.pop('$vector', None)
+    document.pop('$similarity', None)
+    
+    cleaned_documents.append(document)
+
+print(cleaned_documents)
+print(len(cleaned_documents))
