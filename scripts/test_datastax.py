@@ -64,11 +64,9 @@ while comments_processed < 1000:
         })
         print(f'Inserted comment with ID: {current_id}')
         highest_id_processed = current_id  # Update the highest ID processed
+        save_ids_to_file(first_processed_id, highest_id_processed)
         comments_processed += 1  # Increment the counter for processed comments
     else:
         print(f'Skipped item with ID: {current_id}, not a comment or no text field')
 
     current_id += 1  # Move to the next ID
-
-# Once done, save the new range to the text file
-save_ids_to_file(first_processed_id, highest_id_processed)
