@@ -79,3 +79,7 @@ To set up the Word Counter API as a ChatGPT plugin, follow these steps:
 2. Input the localhost URL of the Word Counter API (e.g., "http://localhost:8000/") to set it up as a plugin.
 
 3. Once the plugin is set up, you can interact with it through ChatGPT. For example, you can send the message "count characters and words in 'Hello, world!'" to ChatGPT, and it will return the character count and word count provided by the Word Counter API.
+
+## Use this to set up localhost.run
+
+ssh -R 80:localhost:8000 localhost.run

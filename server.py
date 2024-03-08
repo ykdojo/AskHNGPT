@@ -10,7 +10,7 @@ app = FastAPI(
     description="An API that returns the most relevant HN comments asked by the user.",
     version="1.0.0",
     servers=[
-        {"url": "https://7e9de4463e2821.lhr.life"},
+        {"url": "https://ffb212d5a44b90.lhr.life"},
     ],
 )
 
@@ -71,7 +71,7 @@ def get_hn_comments(question: str):
 
     for document in documents:
         # Calculate the remaining characters allowed
-        remaining_chars = 10000 - total_chars
+        remaining_chars = 20000 - total_chars
         
         # If adding this document exceeds the limit, stop adding more documents
         if len(document['text']) > remaining_chars:
